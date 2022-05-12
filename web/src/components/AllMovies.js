@@ -9,6 +9,7 @@ const AllMovies = (props) => {
       key: ev.target.name,
     });
   };
+
   return (
     <section className="border--medium">
       <h1 className="title--medium">
