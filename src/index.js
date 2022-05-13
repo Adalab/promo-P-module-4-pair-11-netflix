@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const moviesData = require("./data/movies.json");
+const express = require('express');
+const cors = require('cors');
+const moviesData = require('./data/movies.json');
 // create and config server
 const server = express();
 server.use(cors());
@@ -11,9 +11,9 @@ const serverPort = 4000;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
-server.get("/movies", (req, res) => {
+server.get('/movies', (req, res) => {
   //guardamos el valor del query en una constante
-  const genderFilterParam = req.query.gender ? req.query.gender : "";
+  const genderFilterParam = req.query.gender ? req.query.gender : '';
   //aquí respondemos con el listado filtrado
   res.json({
     success: true,
@@ -24,7 +24,7 @@ server.get("/movies", (req, res) => {
       //Se compara con -1 porque en la segunda condición le estamos indicando que la cadena z o referenceStr(z-a) iría por delante de a o compareString(a-z)
       .sort(function (a, z) {
         const sortFilterParam = a.title.localeCompare(z.title);
-        if (req.query.sort === "asc") {
+        if (req.query.sort === 'asc') {
           return sortFilterParam;
         } else {
           return sortFilterParam * -1;
@@ -32,3 +32,9 @@ server.get("/movies", (req, res) => {
       }),
   });
 });
+
+// Parte del fichero src/index.js
+
+// Configuración del primer servidor de estáticos
+const staticServerPathWeb = './src/public-react';
+server.use(express.static(staticServerPathWeb));
