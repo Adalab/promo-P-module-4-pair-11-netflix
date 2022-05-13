@@ -38,3 +38,6 @@ server.get('/movies', (req, res) => {
 // Configuración del primer servidor de estáticos
 const staticServerPathWeb = './src/public-react';
 server.use(express.static(staticServerPathWeb));
+
+const staticServerPathImage = './src/public-movies-images';
+server.use(express.static(staticServerPathImage));

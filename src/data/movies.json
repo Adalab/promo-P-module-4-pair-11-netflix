@@ -5,19 +5,19 @@
       "id": "1",
       "title": "Gambito de dama",
       "gender": "Drama",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPRTbx5ZFAKQYSiCpTb4ePF8bCgz3LuiapWHXBK5482ObKkAs3QQq2AP_sglK5yYHDskE&usqp=CAU"
+      "image": "http://localhost:4000/gambito-de-dama.jpg"
     },
     {
       "id": "2",
       "title": "Friends",
       "gender": "Comedia",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST25yKljSlu6-BhgvZkulkqkCNDiBDYGTXhyBLLatj6nn1NihO-9ZD7oEsvQWdbO788AA&usqp=CAU"
+      "image": "http://localhost:4000/friends.jpg"
     },
     {
       "id": "3",
       "title": "Downton Abbey",
       "gender": "Drama",
-      "image": "https://www.formulatv.com/images/series/posters/400/458/dest_1.jpg"
+      "image": "http://localhost:4000/downton-abbey.webp"
     }
   ]
 }
