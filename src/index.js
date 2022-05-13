@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const moviesData = require('./data/movies.json');
+const users = require('./data/users.json');
 // create and config server
 const server = express();
 server.use(cors());
@@ -30,6 +31,26 @@ server.get('/movies', (req, res) => {
           return sortFilterParam * -1;
         }
       }),
+  });
+});
+server.post('/login', (req, res) => {
+  let exist = users.find((user) => {
+    if (user.email === req.body.email && user.password === req.body.password) {
+      console.log(user);
+      return user;
+    }
+    return null;
+  });
+  console.log(exist);
+  if (!exist) {
+    return res.status(404).json({
+      success: false,
+      errorMessage: 'Usuaria/o no encontrada/o',
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    userId: exist.id,
   });
 });
 

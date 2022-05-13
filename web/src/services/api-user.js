@@ -1,43 +1,48 @@
 // login
-
 const sendLoginToApi = (data) => {
   console.log('Se están enviando datos al login:', data);
-  // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch(
-    '//beta.adalab.es/curso-intensivo-fullstack-recursos/apis/netflix-v1/empty.json'
-  )
+  //crear body params
+
+  //cambiamos el fecth con la ruta correct de login
+  return fetch('http://localhost:4000/login', {
+    //añadimos el método post
+    method: 'POST',
+    //añadimos los headers, esto siempre es igual, copio y pego
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    //añado el body, saco el email y el password de data
+    body: JSON.stringify({
+      email: data.email,
+      password: data.password,
+    }),
+  })
     .then((response) => response.json())
-    .then(() => {
-      // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
-      if (data.email.includes('gmail')) {
-        return {
-          success: true,
-          userId: '123',
-        };
-      } else {
-        return {
-          success: false,
-          errorMessage: 'Usuario no encontrado',
-        };
-      }
+    .then((data) => {
+      return data;
+      //vacío el segundo then para que me retorne los datos introducidos en data (email y password)
     });
 };
 
 // signup
-
+//hago lo mismo que arriba, no sé si es necesario
 const sendSingUpToApi = (data) => {
   console.log('Se están enviando datos al signup:', data);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch(
-    '//beta.adalab.es/curso-intensivo-fullstack-recursos/apis/netflix-v1/empty.json'
-  )
+  return fetch('http://localhost:4000/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: data.email,
+      password: data.password,
+    }),
+  })
     .then((response) => response.json())
-    .then(() => {
+    .then((data) => {
       // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
-      return {
-        success: false,
-        errorMessage: 'Usuario ya existente',
-      };
+      return data;
     });
 };
 
