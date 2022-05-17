@@ -53,7 +53,10 @@ server.post('/login', (req, res) => {
     userId: exist.id,
   });
 });
-
+server.get('/movie/:movieId', (req, res) => {
+  console.log('URL params:', req.params);
+  console.log('URL params id:', req.params.movieId);
+});
 // Parte del fichero src/index.js
 
 // Configuración del primer servidor de estáticos
