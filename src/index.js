@@ -56,6 +56,10 @@ server.post('/login', (req, res) => {
 server.get('/movie/:movieId', (req, res) => {
   console.log('URL params:', req.params);
   console.log('URL params id:', req.params.movieId);
+  const foundMovie = moviesData.movies.find((movieId) => {
+    return movieId.id === req.params.movieId;
+  });
+  console.log('La peli es:', foundMovie);
 });
 // Parte del fichero src/index.js
 
