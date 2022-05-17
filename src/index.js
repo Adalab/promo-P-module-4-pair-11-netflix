@@ -7,11 +7,19 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 
+// Configuración del primer servidor de estáticos
+const staticServerPathWeb = './src/public-react';
+server.use(express.static(staticServerPathWeb));
+
+const staticServerPathImage = './src/public-movies-images';
+server.use(express.static(staticServerPathImage));
+
 // init express aplication
 const serverPort = 4000;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
+
 server.get('/movies', (req, res) => {
   //guardamos el valor del query en una constante
   const genderFilterParam = req.query.gender ? req.query.gender : '';
@@ -33,6 +41,7 @@ server.get('/movies', (req, res) => {
       }),
   });
 });
+
 server.post('/login', (req, res) => {
   let exist = users.find((user) => {
     if (user.email === req.body.email && user.password === req.body.password) {
@@ -58,20 +67,16 @@ server.post('/login', (req, res) => {
 server.set('view engine', 'ejs');
 
 server.get('/movie/:movieId', (req, res) => {
-  console.log('URL params:', req.params);
-  console.log('URL params id:', req.params.movieId);
-  const foundMovie = moviesData.movies.find((movieId) => {
-    return movieId.id === req.params.movieId;
+  // console.log('URL params:', req.params);
+  // console.log('URL params id:', req.params.movieId);
+  const foundMovie = moviesData.movies.find((movie) => {
+    return movie.id === req.params.movieId;
   });
   console.log('La peli es:', foundMovie);
-  res.render('/movie.ejs', foundMovie); //NOS QUEDAMOS AQUÍ NO SABEMOS QUÉ FALLA
+  if (foundMovie) {
+    res.render('movie', foundMovie);
+  } else {
+    const route = { route: req.url };
+    res.render('movie-not-found', route);
+  }
 });
-
-// Parte del fichero src/index.js
-
-// Configuración del primer servidor de estáticos
-const staticServerPathWeb = './src/public-react';
-server.use(express.static(staticServerPathWeb));
-
-const staticServerPathImage = './src/public-movies-images';
-server.use(express.static(staticServerPathImage));
