@@ -1,23 +1,20 @@
-{
-  "success": true,
-  "movies": [
-    {
-      "id": "1",
-      "title": "Gambito de dama",
-      "gender": "Drama",
-      "image": "http://localhost:4000/gambito-de-dama.jpg"
-    },
-    {
-      "id": "2",
-      "title": "Friends",
-      "gender": "Comedia",
-      "image": "http://localhost:4000/friends.jpg"
-    },
-    {
-      "id": "3",
-      "title": "Downton Abbey",
-      "gender": "Drama",
-      "image": "http://localhost:4000/downton-abbey.webp"
-    }
-  ]
-}
+[
+  {
+    "id": "1",
+    "title": "Gambito de dama",
+    "gender": "Drama",
+    "image": "http://localhost:4001/gambito-de-dama.jpg"
+  },
+  {
+    "id": "2",
+    "title": "Friends",
+    "gender": "Comedia",
+    "image": "http://localhost:4001/friends.jpg"
+  },
+  {
+    "id": "3",
+    "title": "Downton Abbey",
+    "gender": "Drama",
+    "image": "http://localhost:4001/downton-abbey.webp"
+  }
+]

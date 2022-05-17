@@ -4,26 +4,25 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="/main.css">
+    <link rel="stylesheet" href="/main.css">
     <title>
-        <%= title %>
+        <%=title%>
     </title>
 </head>
 
 <body>
-    <div class="wrapper">
-        <article class="">
-            <img class="" src="<%=image %>" alt="Carátula de
+    <div class="div">
+        <section class="section">
+            <img class="section__img" src="<%=image %>" alt="Carátula de
         <%=title%>" />
             <div>
-                <h3 class="">
-                    <%= title %>
+                <h3 class="section__title">
+                    <%=title%>
                 </h3>
-                <p class="">Género: <%= gender %>
+                <p class="section__gender">Género: <%=gender%>
                 </p>
-                <a href="../" class="">Volver a inicio</a>
-        </article>
-    </div>
+                <a href="../" class="section__back">Volver a inicio</a>
+        </section>
     </div>
 </body>
 

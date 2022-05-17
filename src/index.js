@@ -2,10 +2,14 @@ const express = require('express');
 const cors = require('cors');
 const moviesData = require('./data/movies.json');
 const users = require('./data/users.json');
+
 // create and config server
 const server = express();
 server.use(cors());
 server.use(express.json());
+
+//configura el motor de templates
+server.set('view engine', 'ejs');
 
 // Configuración del primer servidor de estáticos
 const staticServerPathWeb = './src/public-react';
@@ -18,7 +22,7 @@ const staticServerStyles = './src/public-css';
 server.use(express.static(staticServerStyles));
 
 // init express aplication
-const serverPort = 4000;
+const serverPort = 4001;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
@@ -29,7 +33,7 @@ server.get('/movies', (req, res) => {
   //aquí respondemos con el listado filtrado
   res.json({
     success: true,
-    movies: moviesData.movies
+    movies: moviesData
       .filter((item) => item.gender.includes(genderFilterParam))
       //función para ordenar
       //"asc" hace referencia al value del input A-Z en AllMovies.js
@@ -66,20 +70,17 @@ server.post('/login', (req, res) => {
   });
 });
 
-//configura el motor de plantillas
-server.set('view engine', 'ejs');
-
 server.get('/movie/:movieId', (req, res) => {
   // console.log('URL params:', req.params);
   // console.log('URL params id:', req.params.movieId);
-  const foundMovie = moviesData.movies.find((movie) => {
+  const foundMovie = moviesData.find((movie) => {
     return movie.id === req.params.movieId;
   });
   console.log('La peli es:', foundMovie);
   if (foundMovie) {
     res.render('movie', foundMovie);
   } else {
-    const route = { route: req.url };
-    res.render('movie-not-found', route);
+    const error = { error: req.url };
+    res.render('movie-not-found', error);
   }
 });
