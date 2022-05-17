@@ -14,6 +14,9 @@ server.use(express.static(staticServerPathWeb));
 const staticServerPathImage = './src/public-movies-images';
 server.use(express.static(staticServerPathImage));
 
+const staticServerStyles = './src/public-css';
+server.use(express.static(staticServerStyles));
+
 // init express aplication
 const serverPort = 4000;
 server.listen(serverPort, () => {
