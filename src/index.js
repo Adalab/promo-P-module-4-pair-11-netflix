@@ -53,6 +53,10 @@ server.post('/login', (req, res) => {
     userId: exist.id,
   });
 });
+
+//configura el motor de plantillas
+server.set('view engine', 'ejs');
+
 server.get('/movie/:movieId', (req, res) => {
   console.log('URL params:', req.params);
   console.log('URL params id:', req.params.movieId);
@@ -60,7 +64,9 @@ server.get('/movie/:movieId', (req, res) => {
     return movieId.id === req.params.movieId;
   });
   console.log('La peli es:', foundMovie);
+  res.render('/movie.ejs', foundMovie); //NOS QUEDAMOS AQUÍ NO SABEMOS QUÉ FALLA
 });
+
 // Parte del fichero src/index.js
 
 // Configuración del primer servidor de estáticos
