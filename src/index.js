@@ -49,21 +49,6 @@ server.post('/login', (req, res) => {
   });
 });
 
-server.get('/movie/:movieId', (req, res) => {
-  // console.log('URL params:', req.params);
-  // console.log('URL params id:', req.params.movieId);
-  const foundMovie = moviesData.find((movie) => {
-    return movie.id === req.params.movieId;
-  });
-  console.log('La peli es:', foundMovie);
-  if (foundMovie) {
-    res.render('movie', foundMovie);
-  } else {
-    const error = { error: req.url };
-    res.render('movie-not-found', error);
-  }
-});
-
 //2.Configura la base de datos en NODE JS
 const db = Database('./src/data/database.db', { verbose: console.log });
 
@@ -78,7 +63,6 @@ server.get('/movies', (req, res) => {
     movies: moviesList
       .filter((item) => item.gender.includes(genderFilterParam))
       .sort(function (a, z) {
-        console.log(a.name);
         const sortFilterParam = a.name.localeCompare(z.name);
 
         if (req.query.sort === 'asc') {
@@ -112,3 +96,18 @@ server.get('/movies', (req, res) => {
       }),
   });
 }); */
+
+//5.SELECT PARA EL MOTOR DE PLANTILLAS
+
+server.get('/movie/:movieId', (req, res) => {
+  const query = db.prepare(
+    `SELECT  * FROM movies WHERE id=${req.params.movieId}`
+  );
+  const foundMovie = query.get();
+  if (foundMovie) {
+    res.render('movie', foundMovie);
+  } else {
+    const error = { error: req.url };
+    res.render('movie-not-found', error);
+  }
+});

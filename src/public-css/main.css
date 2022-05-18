@@ -27,6 +27,9 @@
   margin-top: 10%;
   background-color: white;
 }
+.section__div {
+  width: 155px;
+}
 .section__img {
   border-radius: 10px;
   height: 300px;

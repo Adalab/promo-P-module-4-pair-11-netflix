@@ -14,15 +14,18 @@
     <div class="div">
 
         <section class="section">
-            <% movieList.forEach(function (movie){ %>
-                <img class="section__img" src="<%=image %>" alt="Carátula de <%=name%>" />
+
+            <img class="section__img" src="<%=image %>" alt="Carátula de <%=name%>" />
+            <div class="section__div">
                 <h3 class="section__title">
                     <%=name%>
                 </h3>
                 <p class="section__gender">Género: <%=gender%>
                         <a href="../" class="section__back">Volver a inicio</a>
 
-                        <% })%>
+            </div>
+
+
         </section>
     </div>
 </body>
