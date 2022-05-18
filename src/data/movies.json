@@ -1,19 +1,19 @@
 [
   {
     "id": "1",
-    "title": "Gambito de dama",
+    "name": "Gambito de dama",
     "gender": "Drama",
     "image": "http://localhost:4001/gambito-de-dama.jpg"
   },
   {
     "id": "2",
-    "title": "Friends",
+    "name": "Friends",
     "gender": "Comedia",
     "image": "http://localhost:4001/friends.jpg"
   },
   {
     "id": "3",
-    "title": "Downton Abbey",
+    "name": "Downton Abbey",
     "gender": "Drama",
     "image": "http://localhost:4001/downton-abbey.webp"
   }

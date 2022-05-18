@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const moviesData = require('./data/movies.json');
+// const moviesData = require('./data/movies.json');
 const users = require('./data/users.json');
 const Database = require('better-sqlite3');
 
@@ -12,7 +12,7 @@ server.use(express.json());
 //configura el motor de templates
 server.set('view engine', 'ejs');
 
-// Configuración del primer servidor de estáticos
+// Configuración servidor de estáticos
 const staticServerPathWeb = './src/public-react';
 server.use(express.static(staticServerPathWeb));
 
@@ -49,31 +49,7 @@ server.post('/login', (req, res) => {
   });
 });
 
-//DEJO COMENTADOS EL GET MOVIES Y EL GET MOVIES PORQUE ABAJO HE ESTADO PROBADO A HACER LO DEL SELECT
-
-/*server.get('/movies', (req, res) => {
-  //guardamos el valor del query en una constante
-  const genderFilterParam = req.query.gender ? req.query.gender : '';
-  //aquí respondemos con el listado filtrado
-  res.json({
-    success: true,
-    movies: moviesData
-      .filter((item) => item.gender.includes(genderFilterParam))
-      //función para ordenar
-      //"asc" hace referencia al value del input A-Z en AllMovies.js
-      //Se compara con -1 porque en la segunda condición le estamos indicando que la cadena z o referenceStr(z-a) iría por delante de a o compareString(a-z)
-      .sort(function (a, z) {
-        const sortFilterParam = a.title.localeCompare(z.title);
-        if (req.query.sort === 'asc') {
-          return sortFilterParam;
-        } else {
-          return sortFilterParam * -1;
-        }
-      }),
-  });
-}); */
-
-/*server.get('/movie/:movieId', (req, res) => {
+server.get('/movie/:movieId', (req, res) => {
   // console.log('URL params:', req.params);
   // console.log('URL params id:', req.params.movieId);
   const foundMovie = moviesData.find((movie) => {
@@ -86,7 +62,7 @@ server.post('/login', (req, res) => {
     const error = { error: req.url };
     res.render('movie-not-found', error);
   }
-});*/
+});
 
 //2.Configura la base de datos en NODE JS
 const db = Database('./src/data/database.db', { verbose: console.log });
@@ -96,18 +72,43 @@ const db = Database('./src/data/database.db', { verbose: console.log });
 server.get('/movies', (req, res) => {
   const query = db.prepare(`SELECT  * FROM movies  ORDER BY  name `);
   const moviesList = query.all();
-  res.render('movie', { moviesList });
+  const genderFilterParam = req.query.gender ? req.query.gender : '';
+  res.json({
+    success: true,
+    movies: moviesList
+      .filter((item) => item.gender.includes(genderFilterParam))
+      .sort(function (a, z) {
+        console.log(a.name);
+        const sortFilterParam = a.name.localeCompare(z.name);
+
+        if (req.query.sort === 'asc') {
+          return sortFilterParam;
+        } else {
+          return sortFilterParam * -1;
+        }
+      }),
+  });
 });
 
-server.get('/movie/:movieId', (req, res) => {
-  const query = db.prepare(`SELECT  * FROM movies WHERE  name = ? `);
-  const foundMovie = moviesList.find((movie) => {
-    return movie.id === req.params.movieId;
+//el server.get de arriba antes:
+/*server.get('/movies', (req, res) => {
+  //guardamos el valor del query en una constante
+  const genderFilterParam = req.query.gender ? req.query.gender : '';
+  //aquí respondemos con el listado filtrado
+  res.json({
+    success: true,
+    movies: moviesData
+      .filter((item) => item.gender.includes(genderFilterParam))
+      //función para ordenar
+      //"asc" hace referencia al value del input A-Z en AllMovies.js
+      //Se compara con -1 porque en la segunda condición le estamos indicando que la cadena z o referenceStr(z-a) iría por delante de a o compareString(a-z)
+      .sort(function (a, z) {
+        const sortFilterParam = a.name.localeCompare(z.name);
+        if (req.query.sort === 'asc') {
+          return sortFilterParam;
+        } else {
+          return sortFilterParam * -1;
+        }
+      }),
   });
-  if (foundMovie) {
-    res.render('movie', foundMovie);
-  } else {
-    const error = { error: req.url };
-    res.render('movie-not-found', error);
-  }
-});
+}); */

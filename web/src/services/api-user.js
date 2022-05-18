@@ -4,7 +4,7 @@ const sendLoginToApi = (data) => {
   //crear body params
 
   //cambiamos el fecth con la ruta correct de login
-  return fetch('http://localhost:4000/login', {
+  return fetch('http://localhost:4001/login', {
     //añadimos el método post
     method: 'POST',
     //añadimos los headers, esto siempre es igual, copio y pego
@@ -93,7 +93,7 @@ const getUserMoviesFromApi = (userId) => {
         movies: [
           {
             id: 1,
-            title: 'Gambita de dama',
+            name: 'Gambita de dama',
             gender: 'Drama',
             image:
               '//beta.adalab.es/curso-intensivo-fullstack-recursos/apis/netflix-v1/images/gambito-de-dama.jpg',

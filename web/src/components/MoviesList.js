@@ -12,9 +12,9 @@ const MoviesList = (props) => {
           <img
             className="card__img"
             src={movie.image}
-            alt={`Carátula de ${movie.title}`}
+            alt={`Carátula de ${movie.name}`}
           />
-          <h3 className="card__title">{movie.title}</h3>
+          <h3 className="card__title">{movie.name}</h3>
           <p className="card__description">Género: {movie.gender}</p>
         </li>
       );
