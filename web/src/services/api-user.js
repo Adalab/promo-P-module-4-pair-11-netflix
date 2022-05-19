@@ -11,10 +11,7 @@ const sendLoginToApi = (data) => {
       'Content-Type': 'application/json',
     },
     //añado el body, saco el email y el password de data
-    body: JSON.stringify({
-      email: data.email,
-      password: data.password,
-    }),
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -24,19 +21,16 @@ const sendLoginToApi = (data) => {
 };
 
 // signup
-//hago lo mismo que arriba, no sé si es necesario
+//hago lo mismo que arriba
 const sendSingUpToApi = (data) => {
   console.log('Se están enviando datos al signup:', data);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch('http://localhost:4001/login', {
+  return fetch('http://localhost:4001/sign-up', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      email: data.email,
-      password: data.password,
-    }),
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -50,11 +44,22 @@ const sendSingUpToApi = (data) => {
 const sendProfileToApi = (userId, data) => {
   console.log('Se están enviando datos al profile:', userId, data);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch(
-    '//beta.adalab.es/curso-intensivo-fullstack-recursos/apis/netflix-v1/empty.json'
-  );
-};
+  return fetch('http://localhost:4000/profile', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      userId: userId,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
+      console.log(data);
 
+      return data;
+    });
+};
 const getProfileFromApi = (userId) => {
   console.log('Se están pidiendo datos del profile del usuario:', userId);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC

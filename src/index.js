@@ -12,16 +12,6 @@ server.use(express.json());
 //configura el motor de templates
 server.set('view engine', 'ejs');
 
-// Configuración servidor de estáticos
-const staticServerPathWeb = './src/public-react';
-server.use(express.static(staticServerPathWeb));
-
-const staticServerPathImage = './src/public-movies-images';
-server.use(express.static(staticServerPathImage));
-
-const staticServerStyles = './src/public-css';
-server.use(express.static(staticServerStyles));
-
 // init express aplication
 const serverPort = 4001;
 server.listen(serverPort, () => {
@@ -83,10 +73,43 @@ server.post('/login', (req, res) => {
       userId: exist.id,
     });
   } else {
-    console.log('Error fatal');
     return res.status(404).json({
       success: false,
       errorMessage: 'Usuaria/o no encontrada/o',
     });
   }
 });
+
+//2. Registro de nuevas usuarias en el back
+server.post('/sign-up', (req, resp) => {
+  const newEmail = req.body.email;
+  const newPassword = req.body.password;
+  const query = db.prepare('SELECT * FROM users WHERE email = ?');
+  const emailExist = query.get(newEmail);
+  if (emailExist !== undefined) {
+    resp.json({
+      success: false,
+      errorMessage: 'Parece que ya estás registrada',
+    });
+  } else {
+    const query = db.prepare(
+      `INSERT INTO users (email, password) VALUES (?, ?) `
+    );
+    const newUser = query.run(newEmail, newPassword);
+    resp.json({
+      success: true,
+      msj: 'Usuario creado',
+      userID: newUser.lastInsertRowid,
+    });
+  }
+});
+
+// Configuración servidor de estáticos
+const staticServerPathWeb = './src/public-react';
+server.use(express.static(staticServerPathWeb));
+
+const staticServerPathImage = './src/public-movies-images';
+server.use(express.static(staticServerPathImage));
+
+const staticServerStyles = './src/public-css';
+server.use(express.static(staticServerStyles));
