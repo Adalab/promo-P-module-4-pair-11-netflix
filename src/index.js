@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 // const moviesData = require('./data/movies.json');
-const users = require('./data/users.json');
+// const users = require('./data/users.json');
 const Database = require('better-sqlite3');
 
 // create and config server
@@ -26,27 +26,6 @@ server.use(express.static(staticServerStyles));
 const serverPort = 4001;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
-});
-
-server.post('/login', (req, res) => {
-  let exist = users.find((user) => {
-    if (user.email === req.body.email && user.password === req.body.password) {
-      console.log(user);
-      return user;
-    }
-    return null;
-  });
-  console.log(exist);
-  if (!exist) {
-    return res.status(404).json({
-      success: false,
-      errorMessage: 'Usuaria/o no encontrada/o',
-    });
-  }
-  return res.status(200).json({
-    success: true,
-    userId: exist.id,
-  });
 });
 
 //2.Configura la base de datos en NODE JS
@@ -74,29 +53,6 @@ server.get('/movies', (req, res) => {
   });
 });
 
-//el server.get de arriba antes:
-/*server.get('/movies', (req, res) => {
-  //guardamos el valor del query en una constante
-  const genderFilterParam = req.query.gender ? req.query.gender : '';
-  //aquí respondemos con el listado filtrado
-  res.json({
-    success: true,
-    movies: moviesData
-      .filter((item) => item.gender.includes(genderFilterParam))
-      //función para ordenar
-      //"asc" hace referencia al value del input A-Z en AllMovies.js
-      //Se compara con -1 porque en la segunda condición le estamos indicando que la cadena z o referenceStr(z-a) iría por delante de a o compareString(a-z)
-      .sort(function (a, z) {
-        const sortFilterParam = a.name.localeCompare(z.name);
-        if (req.query.sort === 'asc') {
-          return sortFilterParam;
-        } else {
-          return sortFilterParam * -1;
-        }
-      }),
-  });
-}); */
-
 //5.SELECT PARA EL MOTOR DE PLANTILLAS
 
 server.get('/movie/:movieId', (req, res) => {
@@ -109,5 +65,28 @@ server.get('/movie/:movieId', (req, res) => {
   } else {
     const error = { error: req.url };
     res.render('movie-not-found', error);
+  }
+});
+
+//6. Creamos la tabla de las usuarias y el select
+server.post('/login', (req, res) => {
+  const emailFind = req.body.email;
+  const passwordFind = req.body.password;
+  const query = db.prepare(
+    `SELECT * FROM users WHERE email = ? AND password = ?`
+  );
+  const exist = query.get(emailFind, passwordFind);
+
+  if (exist !== undefined) {
+    return res.status(200).json({
+      success: true,
+      userId: exist.id,
+    });
+  } else {
+    console.log('Error fatal');
+    return res.status(404).json({
+      success: false,
+      errorMessage: 'Usuaria/o no encontrada/o',
+    });
   }
 });

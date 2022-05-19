@@ -2,7 +2,6 @@
 const sendLoginToApi = (data) => {
   console.log('Se están enviando datos al login:', data);
   //crear body params
-
   //cambiamos el fecth con la ruta correct de login
   return fetch('http://localhost:4001/login', {
     //añadimos el método post
@@ -29,7 +28,7 @@ const sendLoginToApi = (data) => {
 const sendSingUpToApi = (data) => {
   console.log('Se están enviando datos al signup:', data);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch('http://localhost:4000/login', {
+  return fetch('http://localhost:4001/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
