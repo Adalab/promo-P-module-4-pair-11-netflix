@@ -80,7 +80,7 @@ server.post('/login', (req, res) => {
   }
 });
 
-//2. Registro de nuevas usuarias en el back
+//4.6- 2. Registro de nuevas usuarias en el back
 server.post('/sign-up', (req, resp) => {
   const newEmail = req.body.email;
   const newPassword = req.body.password;

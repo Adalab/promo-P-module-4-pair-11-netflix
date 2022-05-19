@@ -44,22 +44,21 @@ const sendSingUpToApi = (data) => {
 const sendProfileToApi = (userId, data) => {
   console.log('Se están enviando datos al profile:', userId, data);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch('http://localhost:4000/profile', {
+  return fetch('http://localhost:4001/user/profile', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      userId: userId,
+      'user-id': userId,
       'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
     .then((data) => {
       // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
-      console.log(data);
-
       return data;
     });
 };
+
 const getProfileFromApi = (userId) => {
   console.log('Se están pidiendo datos del profile del usuario:', userId);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
