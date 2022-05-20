@@ -11,10 +11,11 @@ import SignUp from './SignUp';
 import apiMovies from '../services/api-movies';
 import apiUser from '../services/api-user';
 import router from '../services/router';
+import ls from '../services/local-storage';
 
 const App = () => {
   // state: user
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState(ls.get('user', ''));
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -82,6 +83,7 @@ const App = () => {
     // Enviamos los datos al API
     apiUser.sendLoginToApi(loginData).then((response) => {
       if (response.success === true) {
+        ls.set('user', response.userId);
         setUserId(response.userId);
         // Si la usuaria introduce bien sus datos redireccionamos desde la página de login al inicio de la página
         router.redirect('/');
@@ -120,7 +122,6 @@ const App = () => {
   También le tenemos que indicar cuál es la usuaria actual, por ello enviamos el userId
   */
   const sendProfileToApi = (userId, data) => {
-    console.log('data de App', data);
     apiUser.sendProfileToApi(userId, data).then(() => {
       // Después de enviar los datos al servidor los volvemos a pedir al servidor para tenerlos actualizados
       apiUser.getProfileFromApi(userId).then((response) => {
@@ -139,6 +140,7 @@ const App = () => {
   const logout = () => {
     router.redirect('/');
     router.reload();
+    ls.clear();
   };
 
   /*
@@ -204,6 +206,7 @@ const App = () => {
               userName={userName}
               userEmail={userEmail}
               userPassword={userPassword}
+              userId={userId}
               sendProfileToApi={sendProfileToApi}
             />
           }

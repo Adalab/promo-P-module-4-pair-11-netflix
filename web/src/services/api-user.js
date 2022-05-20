@@ -33,48 +33,44 @@ const sendSingUpToApi = (data) => {
     body: JSON.stringify(data),
   })
     .then((response) => response.json())
-    .then((data) => {
+    .then(() => {
       // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
       return data;
     });
 };
 
 // profile
-
-const sendProfileToApi = (userId) => {
-  console.log('qué es el userId', userId);
-
+const sendProfileToApi = (userId, data) => {
+  console.log('Se están enviando datos al profile:', userId, data);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
   return fetch('http://localhost:4001/user/profile', {
     method: 'POST',
-    body: JSON.stringify(userId),
-
+    body: JSON.stringify(data),
     headers: {
-      'user-id': userId,
       'Content-Type': 'application/json',
+      userId: userId,
     },
   })
     .then((response) => response.json())
-    .then((userId) => {
-      // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
-      return userId;
+    .then((data) => {
+      return data.success;
     });
 };
-
+//6. Recupera los datos del perfil de la usuaria desde el front
 const getProfileFromApi = (userId) => {
   console.log('Se están pidiendo datos del profile del usuario:', userId);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
-  return fetch('http://localhost:4001/user/movies', {
+  return fetch('http://localhost:4001/user/profile', {
     method: 'GET',
     headers: {
-      'user-id': userId,
+      userId: userId,
       'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
     .then((data) => {
       // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
-      return data;
+      return data.user;
     });
 };
 // user movies
@@ -88,7 +84,7 @@ const getUserMoviesFromApi = (userId) => {
   return fetch('http://localhost:4001/user/movies', {
     method: 'GET',
     headers: {
-      'user-id': userId,
+      userId: userId,
       'Content-Type': 'application/json',
     },
   })

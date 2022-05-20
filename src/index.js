@@ -81,47 +81,79 @@ server.post('/login', (req, res) => {
 });
 
 //4.6- 2. Registro de nuevas usuarias en el back
-server.post('/sign-up', (req, resp) => {
-  const newEmail = req.body.email;
-  const newPassword = req.body.password;
-  const query = db.prepare('SELECT * FROM users WHERE email = ?');
-  const emailExist = query.get(newEmail);
-  if (emailExist !== undefined) {
-    resp.json({
+server.post('/sign-up', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const queryEmail = db.prepare('SELECT * FROM users WHERE email = ?');
+  const foundEmail = queryEmail.get(email);
+  if (foundEmail !== undefined) {
+    res.json({
       success: false,
-      errorMessage: 'Parece que ya estás registrada',
+      errorMessage: 'Usuaria ya existente',
     });
   } else {
     const query = db.prepare(
       `INSERT INTO users (email, password) VALUES (?, ?) `
     );
-    const newUser = query.run(newEmail, newPassword);
-    resp.json({
+    const insertUser = query.run(email, password);
+    res.json({
       success: true,
-      msj: 'Usuario creado',
-      userID: newUser.lastInsertRowid,
+      msj: 'Usuario insertado',
+      userId: insertUser.lastInsertRowid,
     });
   }
 });
 
 //5. Actualiza el perfil de la usuaria en el back
-//ME QUEDO AQUÍ, DATA NO DEVUELVE NADA
-server.post('/user/profile', (req, resp) => {
-  console.log('holi???', req.body);
-  const actualEmail = req.body.email;
-  console.log('tiene datos', actualEmail);
-  const actualPassword = req.body.password;
-  const id = req.headers.userId;
-  const actualName = req.body.name;
 
+server.post('/user/profile', (req, res) => {
+  const data = req.body;
+  const id = req.headers.userid;
   const query = db.prepare(
-    'UPDATE users SET email = ?, password = ?, name= ? WHERE id = ?'
+    'UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?'
   );
-  const dataSave = query.run(actualEmail, actualPassword, actualName, id);
-  resp.json({
+  const result = query.run(data.name, data.email, data.password, id);
+  if (result.changes !== 0) {
+    res.json({
+      success: true,
+      msj: 'Los datos se han cambiado correctamente.',
+    });
+  } else {
+    res.json({
+      success: false,
+      msj: 'Ha habido algún error.',
+    });
+  }
+});
+
+//7. Recupera los datos del perfil de la usuaria desde el back
+server.get('/user/profile', (req, res) => {
+  const userProfile = req.headers.userid;
+  const query = db.prepare('SELECT * FROM users WHERE id = ?');
+  const getUser = query.get(userProfile);
+  res.json({
     success: true,
-    msj: 'Tus datos se han guardado',
-    userID: dataSave.lastInsertRowid,
+    user: getUser,
+  });
+});
+
+//4. Crea el endpoint en el back
+
+server.get('/user/movies', (req, res) => {
+  const userId = req.headers.userid;
+  const movieIdsQuery = db.prepare(
+    'SELECT movieId FROM rel_movies_users WHERE userId = ?'
+  );
+  const movieIds = movieIdsQuery.all(userId);
+  const moviesIdsQuestions = movieIds.map((id) => '?').join(', ');
+  const moviesQuery = db.prepare(
+    `SELECT * FROM movies WHERE id IN (${moviesIdsQuestions})`
+  );
+  const moviesIdsNumbers = movieIds.map((movie) => movie.movieId);
+  const movies = moviesQuery.all(moviesIdsNumbers);
+  res.json({
+    success: true,
+    movies: movies,
   });
 });
 
