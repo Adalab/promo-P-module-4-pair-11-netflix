@@ -104,6 +104,27 @@ server.post('/sign-up', (req, resp) => {
   }
 });
 
+//5. Actualiza el perfil de la usuaria en el back
+//ME QUEDO AQUÍ, DATA NO DEVUELVE NADA
+server.post('/user/profile', (req, resp) => {
+  console.log('holi???', req.body);
+  const actualEmail = req.body.email;
+  console.log('tiene datos', actualEmail);
+  const actualPassword = req.body.password;
+  const id = req.headers.userId;
+  const actualName = req.body.name;
+
+  const query = db.prepare(
+    'UPDATE users SET email = ?, password = ?, name= ? WHERE id = ?'
+  );
+  const dataSave = query.run(actualEmail, actualPassword, actualName, id);
+  resp.json({
+    success: true,
+    msj: 'Tus datos se han guardado',
+    userID: dataSave.lastInsertRowid,
+  });
+});
+
 // Configuración servidor de estáticos
 const staticServerPathWeb = './src/public-react';
 server.use(express.static(staticServerPathWeb));
