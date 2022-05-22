@@ -33,8 +33,6 @@ const sendSingUpToApi = (data) => {
   })
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
-      // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
       return response;
     });
 };
