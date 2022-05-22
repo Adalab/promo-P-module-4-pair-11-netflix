@@ -1,29 +1,23 @@
 // login
+//3. Peticiones POST con body params
 const sendLoginToApi = (data) => {
   console.log('Se están enviando datos al login:', data);
-  //crear body params
-  //cambiamos el fecth con la ruta correct de login
   return fetch('http://localhost:4001/login', {
-    //añadimos el método post
     method: 'POST',
-    //añadimos los headers, esto siempre es igual, copio y pego
     headers: {
       'Content-Type': 'application/json',
     },
-    //añado el body, saco el email y el password de data
     body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((data) => {
       return data;
-      //vacío el segundo then para que me retorne los datos introducidos en data (email y password)
     });
 };
 
 // signup
-//hago lo mismo que arriba
+//7. Registro de nuevas usuarias en el back
 const sendSingUpToApi = (data) => {
-  // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
   return fetch('http://localhost:4001/sign-up', {
     method: 'POST',
     headers: {
@@ -38,9 +32,9 @@ const sendSingUpToApi = (data) => {
 };
 
 // profile
+//8.Actualiza el perfil de la usuaria en el front
 const sendProfileToApi = (userId, data) => {
   console.log('Se están enviando datos al profile:', userId, data);
-  // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
   return fetch('http://localhost:4001/user/profile', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -55,9 +49,9 @@ const sendProfileToApi = (userId, data) => {
     });
 };
 //6. Recupera los datos del perfil de la usuaria desde el front
+//9. Recupera los datos del perfil de la usuaria desde el front
 const getProfileFromApi = (userId) => {
   console.log('Se están pidiendo datos del profile del usuario:', userId);
-  // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
   return fetch('http://localhost:4001/user/profile', {
     method: 'GET',
     headers: {
@@ -67,18 +61,16 @@ const getProfileFromApi = (userId) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
       return data.user;
     });
 };
 // user movies
-
+//10. Películas de una usuaria en el front
 const getUserMoviesFromApi = (userId) => {
   console.log(
     'Se están pidiendo datos de las películas de la usuaria:',
     userId
   );
-  // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
   return fetch('http://localhost:4001/user/movies', {
     method: 'GET',
     headers: {
@@ -88,7 +80,6 @@ const getUserMoviesFromApi = (userId) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      // CAMBIA EL CONTENIDO DE ESTE THEN PARA GESTIONAR LA RESPUESTA DEL SERVIDOR Y RETORNAR AL COMPONENTE APP LO QUE NECESITA
       return data;
     });
 };

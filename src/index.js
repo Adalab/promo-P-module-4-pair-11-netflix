@@ -9,7 +9,7 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 
-//configura el motor de templates
+//6. Renderiza una página cualquiera// configura el motor de templates
 server.set('view engine', 'ejs');
 
 // init express aplication
@@ -18,11 +18,10 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
-//2.Configura la base de datos en NODE JS
+//Configura la base de datos en NODE JS
 const db = Database('./src/data/database.db', { verbose: console.log });
 
-//3.Haz un SELECT para obtener todas las películas
-
+//1.Pide todas las películar y filtra por género y ordena por nombre
 server.get('/movies', (req, res) => {
   const query = db.prepare(`SELECT  * FROM movies  ORDER BY  name `);
   const moviesList = query.all();
@@ -43,21 +42,7 @@ server.get('/movies', (req, res) => {
   });
 });
 
-//5.SELECT PARA EL MOTOR DE PLANTILLAS
-
-server.get('/movie/:movieId', (req, res) => {
-  const query = db.prepare(
-    `SELECT  * FROM movies WHERE id=${req.params.movieId}`
-  );
-  const foundMovie = query.get();
-  if (foundMovie) {
-    res.render('movie', foundMovie);
-  } else {
-    const error = { error: req.url };
-    res.render('movie-not-found', error);
-  }
-});
-
+//3. Peticiones POST con body params
 //6. Creamos la tabla de las usuarias y el select
 server.post('/login', (req, res) => {
   const emailFind = req.body.email;
@@ -80,7 +65,21 @@ server.post('/login', (req, res) => {
   }
 });
 
-//4.6- 2. Registro de nuevas usuarias en el back
+//5.Crea el motor de plantillas//Obtén la película//Renderiza la película
+server.get('/movie/:movieId', (req, res) => {
+  const query = db.prepare(
+    `SELECT  * FROM movies WHERE id=${req.params.movieId}`
+  );
+  const foundMovie = query.get();
+  if (foundMovie) {
+    res.render('movie', foundMovie);
+  } else {
+    const error = { error: req.url };
+    res.render('movie-not-found', error);
+  }
+});
+
+//7. Registro de nuevas usuarias en el back //Comprueba que no haya una usuaria registrada con el mismo email
 server.post('/sign-up', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -104,8 +103,7 @@ server.post('/sign-up', (req, res) => {
   }
 });
 
-//5. Actualiza el perfil de la usuaria en el back
-
+//8.Actualiza el perfil de la usuaria en el back
 server.post('/user/profile', (req, res) => {
   const data = req.body;
   const id = req.headers.userid;
@@ -126,7 +124,7 @@ server.post('/user/profile', (req, res) => {
   }
 });
 
-//7. Recupera los datos del perfil de la usuaria desde el back
+//9. Recupera los datos del perfil de la usuaria desde el back
 server.get('/user/profile', (req, res) => {
   const userProfile = req.headers.userid;
   const query = db.prepare('SELECT * FROM users WHERE id = ?');
@@ -137,8 +135,7 @@ server.get('/user/profile', (req, res) => {
   });
 });
 
-//4. Crea el endpoint en el back
-
+//10. Películas de una usuaria en el back
 server.get('/user/movies', (req, res) => {
   const userId = req.headers.userid;
   const movieIdsQuery = db.prepare(
@@ -157,7 +154,7 @@ server.get('/user/movies', (req, res) => {
   });
 });
 
-// Configuración servidor de estáticos
+// 2. Configuración servidor de estáticos
 const staticServerPathWeb = './src/public-react';
 server.use(express.static(staticServerPathWeb));
 
