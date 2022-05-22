@@ -104,6 +104,7 @@ const App = () => {
     setSignUpErrorMessage('');
     // Enviamos los datos al API
     apiUser.sendSingUpToApi(data).then((response) => {
+      console.log(response);
       if (response.success === true) {
         setUserId(response.userId);
         // Si la usuaria introduce bien sus datos redireccionamos desde la página de signup al inicio de la página

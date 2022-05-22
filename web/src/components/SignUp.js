@@ -27,6 +27,7 @@ const SignUp = (props) => {
 
   const renderErrorMessage = () => {
     // Si el API ha devuelto un error, APP lo guarda en el estado y nos lo pasa
+    console.log(props.signUpErrorMessage);
     if (props.signUpErrorMessage !== '') {
       return (
         <p className="border--medium border--warning mt-1">
